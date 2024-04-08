@@ -3,7 +3,66 @@
 #include <limits>
 #include <locale.h>
 #include <cmath>
+#include "functions.h";
 using namespace std;
+
+void work_matrix()
+{
+
+}
+
+void work_fraction()
+{
+
+}
+
+void work_combinatorics_formulas()
+{
+
+}
+
+void work_probability_and_math_statistic()
+{
+
+}
+
+void work_function()
+{
+	int oo = -1;
+
+	do
+
+	{
+		cout << "Выберите действие, совершаемое над функцией, где:\n1 - поиск корня F(x) = 0 на отрезке\n2 - поиск экстремумов на отрезке\n0 - выйти из программы" << endl;
+		while (!(cin >> oo))
+		{
+			cout << "Некорректный ввод. Пожалуйста, введите целое число: ";
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+		switch (oo)
+		{
+		case 0:
+			cout << "Выполнение программы завершено" << endl;
+			break;
+		case 1:
+			cout << "Вы выбрали поиск корня F(x) = 0 на отрезке" << endl;
+			searchRoot();
+			break;
+		case 2:
+			cout << "Вы выбрали поиск экстремумов на отрезке" << endl;
+			searchExtremums();
+			break;
+		default:
+			cout << "Неверный выбор действия" << endl;
+		}
+	} while (oo != 0);
+}
+
+void work_polinom()
+{
+
+}
 
 double func11(double x, double* coefficient, int n, double a0)
 {
