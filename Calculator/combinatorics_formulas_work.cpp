@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <iomanip>
 #include <limits>
 #include <locale.h>
@@ -8,5 +8,5 @@ using namespace std;
 
 void work_combinatorics_formulas()
 {
-	// сюда пиши свой main
+	// СЃСЋРґР° РїРёС€Рё СЃРІРѕР№ main
 }
