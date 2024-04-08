@@ -3,7 +3,14 @@
 #include <limits>
 #include <locale.h>
 #include <cmath>
+
+#include "matrix.h"
+#include "fraction.h"
+#include "combinatorics_formulas.h"
+#include "probability_and_math_statistic.h"
 #include "functions.h"
+#include "polinom.h"
+
 using namespace std;
 
 
@@ -69,7 +76,7 @@ int main()
 			work_polinom();
 			break;
 		}
-		default:
+		default:	
 			cout << "Неверный выбор действия" << endl;
 		}
 

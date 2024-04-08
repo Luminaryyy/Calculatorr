@@ -13,18 +13,54 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Исходные файлы\.cpp">
+      <UniqueIdentifier>{ad9a0131-f58f-4586-8fbc-bddd2f5dd9f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\.h">
+      <UniqueIdentifier>{169a87db-8e83-4f6f-8e87-c8c4e9f3f8fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="functions_work.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="matrix_work.cpp">
+      <Filter>Исходные файлы\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="fraction_work.cpp">
+      <Filter>Исходные файлы\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="combinatorics_formulas_work.cpp">
+      <Filter>Исходные файлы\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="probability_and_math_statistic_work.cpp">
+      <Filter>Исходные файлы\.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="polinom_work.cpp">
+      <Filter>Исходные файлы\.cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="fraction.h">
+      <Filter>Исходные файлы\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="combinatorics_formulas.h">
+      <Filter>Исходные файлы\.h</Filter>
+    </ClInclude>
     <ClInclude Include="functions.h">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="matrix.h">
+      <Filter>Исходные файлы\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="polinom.h">
+      <Filter>Исходные файлы\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="probability_and_math_statistic.h">
+      <Filter>Исходные файлы\.h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
