@@ -3,7 +3,7 @@
 #include <limits>
 #include <locale.h>
 #include <cmath>
-#include "functions.h";
+#include "functions.h"
 using namespace std;
 
 
