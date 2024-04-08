@@ -6,25 +6,6 @@
 #include "functions.h";
 using namespace std;
 
-void work_matrix()
-{
-
-}
-
-void work_fraction()
-{
-
-}
-
-void work_combinatorics_formulas()
-{
-
-}
-
-void work_probability_and_math_statistic()
-{
-
-}
 
 void work_function()
 {
@@ -33,7 +14,12 @@ void work_function()
 	do
 
 	{
-		cout << "Выберите действие, совершаемое над функцией, где:\n1 - поиск корня F(x) = 0 на отрезке\n2 - поиск экстремумов на отрезке\n0 - выйти из программы" << endl;
+		cout << "Выберите действие, совершаемое над функцией, где:\n"
+			<< "1 - Вычисление определённого интеграла на отрезке;\n"
+			<< "2 - Построение графика функции;\n"
+			<< "3 - поиск корня F(x) = 0 на отрезке;\n"
+			<< "4 - поиск экстремумов на отрезке;\n"
+			<< "0 - выйти из программы" << endl;
 		while (!(cin >> oo))
 		{
 			cout << "Некорректный ввод. Пожалуйста, введите целое число: ";
@@ -46,10 +32,18 @@ void work_function()
 			cout << "Выполнение программы завершено" << endl;
 			break;
 		case 1:
+			cout << "Вы выбрали вычисление определённого интеграла на отрезке" << endl;
+			integral();
+			break;
+		case 2:
+			cout << "Вы выбрали построение графика функции" << endl;
+
+			break;
+		case 3:
 			cout << "Вы выбрали поиск корня F(x) = 0 на отрезке" << endl;
 			searchRoot();
 			break;
-		case 2:
+		case 4:
 			cout << "Вы выбрали поиск экстремумов на отрезке" << endl;
 			searchExtremums();
 			break;
@@ -59,10 +53,449 @@ void work_function()
 	} while (oo != 0);
 }
 
-void work_polinom()
+
+
+void integral()
+{
+	int x = 0;
+
+	cout << "Введите нижний предел интегрирования:\n";
+	double integration_range1;
+	while (!(cin >> integration_range1))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "Введите верхний предел интегрирования:\n";
+	double integration_range2;
+	while (!(cin >> integration_range2))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	function(x, integration_range1, integration_range2);
+}
+
+double polinom_cin(double x, double* coefficient, int n)
+{
+	double result = 0;
+	{
+		for (int i = 1; i <= n; i++)
+		{
+			result += coefficient[i] * pow(x, i);
+		}
+	}
+	return result + coefficient[0];
+}
+
+void polinom(double integration_range1, double integration_range2)
+{
+	cout << "Вы выбрали функцию типа: полином n - ой степени - a0 + a1*x + a2*x^2 + ... + aN*x^N" << endl;
+	cout << "Необходимо заполнить маску полинома, введите его свободный член и максимальную степень" << endl;
+
+	double a0, n;
+
+	cout << "a0 = ";
+
+	while (!(cin >> a0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "n = ";
+
+	while (!(cin >> n) || n == 0)
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "Введите коэффициенты, соответствующие каждой степени X" << endl;
+
+	double* coefficient = new double[abs(n)];
+	coefficient[0] = a0;
+
+	for (int i = 1; i <= abs(n); i++)
+	{
+		cout << "a" << i << " = "; cin >> coefficient[i];
+	}
+
+	double step;
+	int N = 10000;
+	int k;
+	step = (integration_range2 - integration_range1) / N;
+
+	double result = polinom_cin(integration_range1, coefficient, n) + polinom_cin(integration_range2, coefficient, n);
+	for (int i = 1; i <= N - 1; i++)
+	{
+		k = 2 + (i % 2) * 2;
+		result += polinom_cin(integration_range1 + i * step, coefficient, n) * k;
+	}
+	result *= step / 3;
+	cout << "Результат вычисления интеграла:  " << result;
+}
+
+
+
+double degree_cin(double x, double a0, double b0, double c0)
+{
+	return a0 * pow(x, b0) + c0;
+}
+
+void degree(double integration_range1, double integration_range2)
+{
+	cout << "Вы выбрали функцию типа: степенная функция: a0*x^b0 + c0" << endl;
+	cout << "Необходимо заполнить маску степенной функции, введите ее свободный член и множитель, степень X" << endl;
+
+	double c0, b0, a0;
+
+	cout << "c0 = ";
+
+	while (!(cin >> c0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "a0 = ";
+
+	while (!(cin >> a0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "b0 = ";
+
+	while (!(cin >> b0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	double step;
+	int N = 10000;
+	int k;
+	step = (integration_range2 - integration_range1) / N;
+
+	double result = degree_cin(integration_range1, a0, b0, c0) + degree_cin(integration_range2, a0, b0, c0);
+	for (int i = 1; i <= N - 1; i++)
+	{
+		k = 2 + (i % 2) * 2;
+		result += degree_cin(integration_range1 + i * step, a0, b0, c0) * k;
+	}
+	result *= step / 3;
+	cout << "Результат вычисления интеграла:  " << result;
+}
+
+
+
+double exponential_cin(double x, double a0, double b0, double c0, double d0)
+{
+	return a0 * pow(b0, c0 * x) + d0;
+}
+
+void exponential(double integration_range1, double integration_range2)
 {
 
+	cout << "Вы выбрали функцию типа: показательная функция: a0*b0^(c0*x) + d0" << endl;
+	cout << "Необходимо заполнить маску показательной функции, введите ее свободный член, основание(a*b) и множитель показателя X" << endl;
+
+	double d0, a0 = 0, b0 = 0, c0;
+
+	cout << "d0 = ";
+
+	while (!(cin >> d0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	while (a0 * b0 <= 0 || a0 * b0 == 1)
+	{
+		cout << "a0 = ";
+
+		while (!(cin >> a0))
+		{
+			cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+
+		cout << "b0 = ";
+
+		while (!(cin >> b0))
+		{
+			cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
+
+	cout << "c0 = ";
+
+	while (!(cin >> c0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	double step;
+	int N = 10000;
+	int k;
+	step = (integration_range2 - integration_range1) / N;
+
+	double result = exponential_cin(integration_range1, a0, b0, c0, d0) + exponential_cin(integration_range2, a0, b0, c0, d0);
+	for (int i = 1; i <= N - 1; i++)
+	{
+		k = 2 + (i % 2) * 2;
+		result += exponential_cin(integration_range1 + i * step, a0, b0, c0, d0) * k;
+	}
+	result *= step / 3;
+	cout << "Результат вычисления интеграла:  " << result;
 }
+
+
+
+double logarithm_cin(double x, double a0, double b0, double c0)
+{
+	return a0 * log(b0 * x) + c0;
+}
+
+void logarithm(double integration_range1, double integration_range2)
+{
+	cout << "Вы выбрали функцию типа: логарифмическая функция: a0*ln(b0*x) + c0" << endl;
+	cout << "Необходимо заполнить маску логарифмической функции, введите ее свободный член, множитель логарифма и множитель X аргумента логарифма" << endl;
+
+	double c0, a0, b0;
+
+	cout << "c0 = ";
+
+	while (!(cin >> c0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "a0 = ";
+
+	while (!(cin >> a0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "b0 = ";
+
+	while (!(cin >> b0) || b0 <= 0)
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	double step;
+	int N = 10000;
+	int k;
+	step = (integration_range2 - integration_range1) / N;
+
+	double result = logarithm_cin(integration_range1, a0, b0, c0) + logarithm_cin(integration_range2, a0, b0, c0);
+	for (int i = 1; i <= N - 1; i++)
+	{
+		k = 2 + (i % 2) * 2;
+		result += logarithm_cin(integration_range1 + i * step, a0, b0, c0) * k;
+	}
+	result *= step / 3;
+	cout << "Результат вычисления интеграла:  " << result;
+}
+
+
+
+double sinus_cin(double x, double a0, double b0, double c0, double d0)
+{
+	return a0 * sin(b0 * x + c0) + d0;
+}
+
+void sinus(double integration_range1, double integration_range2)
+{
+	cout << "Вы выбрали функцию типа: синусоида: a0*sin(b0*x + c0) + d0" << endl;
+	cout << "Необходимо заполнить маску синусоиды, введите ее свободный член, множитель sin - уса, множитель X аргумента sin - уса, слагаемое аргумента sin - уса" << endl;
+
+	double a0, b0, c0, d0;
+
+	cout << "d0 = ";
+
+	while (!(cin >> d0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "a0 = ";
+
+	while (!(cin >> a0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "b0 = ";
+
+	while (!(cin >> b0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "c0 = ";
+
+	while (!(cin >> c0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	double step;
+	int N = 10000;
+	int k;
+	step = (integration_range2 - integration_range1) / N;
+
+	double result = sinus_cin(integration_range1, a0, b0, c0, d0) + sinus_cin(integration_range2, a0, b0, c0, d0);
+	for (int i = 1; i <= N - 1; i++)
+	{
+		k = 2 + (i % 2) * 2;
+		result += sinus_cin(integration_range1 + i * step, a0, b0, c0, d0) * k;
+	}
+	result *= step / 3;
+	cout << "Результат вычисления интеграла:  " << result;
+
+}
+
+
+
+double cosinus_cin(double x, double a0, double b0, double c0, double d0)
+{
+	return a0 * cos(b0 * x + c0) + d0;
+}
+
+void cosinus(double integration_range1, double integration_range2)
+{
+	cout << "Вы выбрали функцию типа: косинусоида: a0* cos(b0 * x + c0) + d0;" << endl;
+	cout << "Необходимо заполнить маску синусоиды, введите ее свободный член, множитель cos - уса, множитель X аргумента cos - инуса, слагаемое аргумента cos - инуса" << endl;
+
+	double a0, b0, c0, d0;
+
+	cout << "d0 = ";
+
+	while (!(cin >> d0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "a0 = ";
+
+	while (!(cin >> a0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "b0 = ";
+
+	while (!(cin >> b0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "c0 = ";
+
+	while (!(cin >> c0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	double step;
+	int N = 10000;
+	int k;
+	step = (integration_range2 - integration_range1) / N;
+
+	double result = cosinus_cin(integration_range1, a0, b0, c0, d0) + cosinus_cin(integration_range2, a0, b0, c0, d0);
+	for (int i = 1; i <= N - 1; i++)
+	{
+		k = 2 + (i % 2) * 2;
+		result += cosinus_cin(integration_range1 + i * step, a0, b0, c0, d0) * k;
+	}
+	result *= step / 3;
+	cout << "Результат вычисления интеграла:  " << result;
+
+}
+
+void function(double x, double integration_range1, double integration_range2)
+{
+	int o1;
+
+	do
+	{
+		cout << "Выберите функцию, с которой хотите работать, где:\n1 - полином n - ой степени: a0 + a1*x + a2*x^2 + ... + aN*x^N\n2 - степенная функция: a0*x^b0 + c0\n3 - показательная функция: a0*b0^(c0*x) + d0\n4 - логарифмическая функция: a0*ln(b0*x) + c0\n5 - синусоида: a0*sin(b0*x + c0) + d0\n6 - косинусоида: a0*cos(b0*x + c0) + d0\n0 - закрыть меню выбора функции" << endl;
+		while (!(cin >> o1))
+		{
+			cout << "Некорректный ввод. Пожалуйста, введите целое число: ";
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+
+		switch (o1)
+		{
+		case 0:
+			cout << "Меню выбора функции закрыто" << endl;
+			break;
+		case 1:
+			polinom(integration_range1, integration_range2);
+			break;
+		case 2:
+			degree(integration_range1, integration_range2);
+			break;
+		case 3:
+			exponential(integration_range1, integration_range2);
+			break;
+		case 4:
+			logarithm(integration_range1, integration_range2);
+			break;
+		case 5:
+			sinus(integration_range1, integration_range2);
+			break;
+		case 6:
+			cosinus(integration_range1, integration_range2);
+			break;
+		}
+	} while (o1 != 0);
+}
+
 
 double func11(double x, double* coefficient, int n, double a0)
 {
@@ -523,14 +956,6 @@ void Logarithm1()
 
 double func15(double a0, double b0, double c0, double d0, double x)
 {
-	//double pi = 3.14159265358979323846;
-	//double result = (b0 * x + c0) * (pi / 180);
-
-	/*if (result < -pi / 2 || result > pi / 2) {
-		cerr << "Аргумент синуса вышел за допустимые пределы." << endl;
-		return NAN;
-	}*/
-
 	return a0 * sin(b0 * x + c0) + d0;
 }
 
@@ -647,14 +1072,6 @@ void SineWave1()
 
 double func16(double a0, double b0, double c0, double d0, double x)
 {
-	//double pi = 3.14159265358979323846;
-	//double result = (b0 * x + c0) * (pi / 180);
-
-	/*if (result < -pi / 2 || result > pi / 2) {
-		cerr << "Аргумент синуса вышел за допустимые пределы." << endl;
-		return NAN;
-	}*/
-
 	return a0 * cos(b0 * x + c0) + d0;
 }
 

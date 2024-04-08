@@ -127,11 +127,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="combinatorics_formulas_work.cpp" />
+    <ClCompile Include="fraction_work.cpp" />
     <ClCompile Include="functions_work.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="matrix_work.cpp" />
+    <ClCompile Include="polinom_work.cpp" />
+    <ClCompile Include="probability_and_math_statistic_work.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="combinatorics_formulas.h" />
+    <ClInclude Include="fraction.h" />
     <ClInclude Include="functions.h" />
+    <ClInclude Include="matrix.h" />
+    <ClInclude Include="polinom.h" />
+    <ClInclude Include="probability_and_math_statistic.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
