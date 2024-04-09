@@ -1,8 +1,12 @@
-﻿#include <iostream>
+﻿#define SDL_MAIN_HANDLED
+#include <iostream>
 #include <iomanip>
 #include <limits>
 #include <locale.h>
 #include <cmath>
+#include <SDL.h>
+#include <SDL_main.h>
+#include <SDL_error.h>
 
 #include "matrix.h"
 #include "fraction.h"
@@ -15,10 +19,16 @@ using namespace std;
 
 
 
-int main()
+int main(int argc, char* args[])
 {
 	setlocale(LC_ALL, "Russian");
 	int o = -1;
+
+	cout << "\t\t/----------------/\n"
+		 << "\t\t|                |\n"
+		 << "\t\t/  Калькулятор!  /\n"
+		 << "\t\t|                |\n"
+		 << "\t\t/----------------/\n";
 
 	do {
 		cout << "Выберите тип калькулятора, с которым хотите работать:\n1 - Матричный калькулятор;"
@@ -67,7 +77,7 @@ int main()
 		case 5:
 		{
 			cout << "Вы выбрали работу с функциями\n";
-			work_function();
+			work_function(argc, args);
 			break;
 		}
 		case 6:
