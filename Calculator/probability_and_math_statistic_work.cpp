@@ -1,9 +1,4 @@
-﻿#include <iostream>
-#include <iomanip>
-#include <limits>
-#include <locale.h>
-#include <cmath>
-#include "combinatorics_formulas.h"
+﻿#include "probability_and_math_statistic.h"
 using namespace std;
 
 void Probability() {
@@ -158,12 +153,27 @@ void work_probability_and_math_statistic()
 			stop = true;
 			break;
 		case 1:
+			cout << "\t\t/-------------------/\n"
+				 << "\t\t|                   |\n"
+				 << "\t\t/  Вероятность m/n  /\n"
+				 << "\t\t|                   |\n"
+				 << "\t\t/-------------------/\n";
 			Probability();
 			break;
 		case 2:
+			cout << "\t\t/---------------------------------------------------/\n"
+				 << "\t\t|                                                   |\n"
+				 << "\t\t/  Дисперсия для дискретного распределения велечин  /\n"
+				 << "\t\t|                                                   |\n"
+				 << "\t\t/---------------------------------------------------/\n";
 			Variance();
 			break;
 		case 3:
+			cout << "\t\t/-------------------------------------------------------/\n"
+				 << "\t\t|                                                       |\n"
+				 << "\t\t/  Мат. ожидание для дискретного распределения величин  /\n"
+				 << "\t\t|                                                       |\n"
+				 << "\t\t/-------------------------------------------------------/\n";
 			ExpectedValue();
 			break;
 		default:

@@ -1,27 +1,13 @@
-﻿#include <iostream>
-#include <iomanip>
-#include <limits>
-#include <locale.h>
-#include <cmath>
-#include "functions.h"
-#include <SDL.h>
-#include <SDL_main.h>
-#include <SDL_error.h>
+﻿#include "functions.h"
 using namespace std;
-
-const int screen_width = 800;
-const int screen_height = 600;
-
-const int density = 10; // плотность отрисовки
-const double step = 0.5;
 
 SDL_Window* window = NULL;
 SDL_Renderer* render = NULL;
 
-// Построение графика - 70 - 506
-// Вычисление интеграла - 507 - 950
-// Поиск корня на отрезке - 951 - 1683
-// Поиск экстремума на отрезке - 1684 - 2484
+// Построение графика - 63 - 501
+// Вычисление интеграла - 502 - 943
+// Поиск корня на отрезке - 944 - 1676
+// Поиск экстремума на отрезке - 1677 - 2477
 
 void work_function(int argc, char* args[])
 {
@@ -50,22 +36,43 @@ void work_function(int argc, char* args[])
 			break;
 		case 1:
 			cout << "Вы выбрали вычисление определённого интеграла на отрезке" << endl;
+			cout << "\t\t/------------------------/\n"
+				 << "\t\t|                        |\n"
+				 << "\t\t/  Вычисление интеграла  /\n"
+				 << "\t\t|                        |\n"
+				 << "\t\t/------------------------/\n";
 			integral();
 			break;
 		case 2:
 			cout << "Вы выбрали построение графика функции" << endl;
+			cout << "\t\t/-----------------------/\n"
+				 << "\t\t|                       |\n"
+				 << "\t\t/  Построение графиков  /\n"
+				 << "\t\t|                       |\n"
+				 << "\t\t/-----------------------/\n";
 			draw_graph(argc, args);
 			break;
 		case 3:
 			cout << "Вы выбрали поиск корня F(x) = 0 на отрезке" << endl;
+			cout << "\t\t/--------------------------/\n"
+				 << "\t\t|                          |\n"
+				 << "\t\t/  Поиск корня на отрезке  /\n"
+				 << "\t\t|                          |\n"
+				 << "\t\t/--------------------------/\n";
 			searchRoot();
 			break;
 		case 4:
 			cout << "Вы выбрали поиск экстремумов на отрезке" << endl;
+			cout << "\t\t/-------------------------------/\n"
+				<< "\t\t|                                |\n"
+				<< "\t\t/  Поиск экстремумов на отрезке  /\n"
+				<< "\t\t|                                |\n"
+				<< "\t\t/--------------------------------/\n";
 			searchExtremums();
 			break;
 		default:
 			cout << "Неверный выбор действия" << endl;
+			break;
 		}
 	} while (!stop);
 }
@@ -78,37 +85,21 @@ void draw_graph(int argc, char* args[])
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_Event e;
 
+
 	window = SDL_CreateWindow(u8"Калькулятор", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, SDL_WINDOW_SHOWN);
 	render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-	bool quit = false;
+	SDL_SetRenderDrawColor(render, 50, 50, 50, 50);
+	SDL_RenderClear(render);
 
-	while (!quit) {
+	SDL_SetRenderDrawColor(render, 255, 255, 255, 0);
+	SDL_RenderDrawLine(render, screen_width / 2, 0, screen_width / 2, screen_height);
+	SDL_RenderDrawLine(render, 0, screen_height / 2, screen_width, screen_height / 2);
+	SDL_RenderPresent(render);
 
-		while (SDL_PollEvent(&e) != 0) {
-			if (e.type == SDL_QUIT) {
-				quit = true;
-			}
-		}
+	function_choice();
 
-		SDL_SetRenderDrawColor(render, 50, 50, 50, 50);
-		SDL_RenderClear(render);
 
-		SDL_SetRenderDrawColor(render, 255, 255, 255, 0);
-		SDL_RenderDrawLine(render, screen_width / 2, 0, screen_width / 2, screen_height);
-		SDL_RenderDrawLine(render, 0, screen_height / 2, screen_width, screen_height / 2);
-		SDL_RenderPresent(render);
-
-		function_choice();
-
-	}
-
-	SDL_DestroyRenderer(render);
-	SDL_DestroyWindow(window);
-	window = NULL;
-	render = NULL;
-
-	SDL_Quit();
 }
 
 double polynomialFunction(double x, double* coefficient, int n)
@@ -468,7 +459,12 @@ void function_choice()
 		{
 		case 0:
 		{
-			cout << "Меню выбора функции закрыто" << endl;
+			cout << "Меню выбора функции закрыто\n";
+			SDL_DestroyRenderer(render);
+			SDL_DestroyWindow(window);
+			window = NULL;
+			render = NULL;
+			SDL_Quit();
 			break;
 		}
 		case 1:
@@ -501,7 +497,10 @@ void function_choice()
 			cosinusoid1();
 			break;
 		}
-		default: cout << "ошибка" << endl; break;
+		default: 
+		{
+			cout << "ошибка" << endl; break; 
+		}
 		}
 	} while (o1 != 0);
 }

@@ -1,8 +1,22 @@
 ﻿#define SDL_MAIN_HANDLED
 #include <iostream>
+#include <iomanip>
+#include <limits>
+#include <locale.h>
+#include <cmath>
 #include <SDL.h>
 #include <SDL_main.h>
 #include <SDL_error.h>
+
+
+
+const int screen_width = 800;
+const int screen_height = 600;
+
+const int density = 10; // плотность отрисовки
+const double step = 0.5;
+
+
 
 void work_function(int argc, char* args[]);
 
