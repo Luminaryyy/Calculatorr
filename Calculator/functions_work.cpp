@@ -1,16 +1,18 @@
-﻿#include <iostream>
-#include <iomanip>
-#include <limits>
-#include <locale.h>
-#include <cmath>
-#include "functions.h"
+﻿#include "functions.h"
 using namespace std;
 
+SDL_Window* window = NULL;
+SDL_Renderer* render = NULL;
 
-void work_function()
+// Построение графика - 63 - 501
+// Вычисление интеграла - 502 - 943
+// Поиск корня на отрезке - 944 - 1676
+// Поиск экстремума на отрезке - 1677 - 2477
+
+void work_function(int argc, char* args[])
 {
-	int oo = -1;
-
+	int oo;
+	bool stop = false;
 	do
 
 	{
@@ -30,30 +32,480 @@ void work_function()
 		{
 		case 0:
 			cout << "Выполнение программы завершено" << endl;
+			stop = true;
 			break;
 		case 1:
 			cout << "Вы выбрали вычисление определённого интеграла на отрезке" << endl;
+			cout << "\t\t/------------------------/\n"
+				 << "\t\t|                        |\n"
+				 << "\t\t/  Вычисление интеграла  /\n"
+				 << "\t\t|                        |\n"
+				 << "\t\t/------------------------/\n";
 			integral();
 			break;
 		case 2:
 			cout << "Вы выбрали построение графика функции" << endl;
-
+			cout << "\t\t/-----------------------/\n"
+				 << "\t\t|                       |\n"
+				 << "\t\t/  Построение графиков  /\n"
+				 << "\t\t|                       |\n"
+				 << "\t\t/-----------------------/\n";
+			draw_graph(argc, args);
 			break;
 		case 3:
 			cout << "Вы выбрали поиск корня F(x) = 0 на отрезке" << endl;
+			cout << "\t\t/--------------------------/\n"
+				 << "\t\t|                          |\n"
+				 << "\t\t/  Поиск корня на отрезке  /\n"
+				 << "\t\t|                          |\n"
+				 << "\t\t/--------------------------/\n";
 			searchRoot();
 			break;
 		case 4:
 			cout << "Вы выбрали поиск экстремумов на отрезке" << endl;
+			cout << "\t\t/-------------------------------/\n"
+				<< "\t\t|                                |\n"
+				<< "\t\t/  Поиск экстремумов на отрезке  /\n"
+				<< "\t\t|                                |\n"
+				<< "\t\t/--------------------------------/\n";
 			searchExtremums();
 			break;
 		default:
 			cout << "Неверный выбор действия" << endl;
+			break;
 		}
-	} while (oo != 0);
+	} while (!stop);
 }
 
 
+/// Построение графика \\\
+
+void draw_graph(int argc, char* args[])
+{
+	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Event e;
+
+
+	window = SDL_CreateWindow(u8"Калькулятор", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, SDL_WINDOW_SHOWN);
+	render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+	SDL_SetRenderDrawColor(render, 50, 50, 50, 50);
+	SDL_RenderClear(render);
+
+	SDL_SetRenderDrawColor(render, 255, 255, 255, 0);
+	SDL_RenderDrawLine(render, screen_width / 2, 0, screen_width / 2, screen_height);
+	SDL_RenderDrawLine(render, 0, screen_height / 2, screen_width, screen_height / 2);
+	SDL_RenderPresent(render);
+
+	function_choice();
+
+
+}
+
+double polynomialFunction(double x, double* coefficient, int n)
+{
+	double result = 0;
+	{
+		for (int i = 1; i <= n; i++)
+		{
+			result += coefficient[i] * pow(x, i);
+		}
+	}
+	return result + coefficient[0];
+}
+
+void polinomial1()
+{
+	cout << "Вы выбрали функцию типа: полином n - ой степени - a0 + a1*x + a2*x^2 + ... + aN*x^N" << endl;
+	cout << "Необходимо заполнить маску полинома, введите его свободный член и максимальную степень" << endl;
+
+	double a0, n;
+
+	cout << "a0 = ";
+
+	while (!(cin >> a0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "n = ";
+
+	while (!(cin >> n) || n == 0)
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "Введите коэффициенты, соответствующие каждой степени X" << endl;
+
+	double* coefficient = new double[abs(n)];
+	coefficient[0] = a0;
+
+	for (int i = 1; i <= abs(n); i++)
+	{
+		cout << "a" << i << " = "; cin >> coefficient[i];
+	}
+
+	SDL_SetRenderDrawColor(render, 255, 255, 255, 0);
+	for (double x = -screen_width / 2; x < screen_width / 2; x += step) {
+		double y = polynomialFunction(x / density, coefficient, n) * density;
+		int screenX = x + screen_width / 2;
+		int screenY = screen_height / 2 - static_cast<int>(y);
+		SDL_RenderDrawPoint(render, screenX, screenY);
+	}
+	SDL_RenderPresent(render);
+}
+
+double degreeFunction(double x, double a0, double b0, double c0)
+{
+	return a0 * pow(x, b0) + c0;
+}
+
+void degree1()
+{
+	cout << "Вы выбрали функцию типа: степенная функция: a0*x^b0 + c0" << endl;
+	cout << "Необходимо заполнить маску степенной функции, введите ее свободный член и множитель, степень X" << endl;
+
+	double c0, b0, a0;
+
+	cout << "c0 = ";
+
+	while (!(cin >> c0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "a0 = ";
+
+	while (!(cin >> a0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "b0 = ";
+
+	while (!(cin >> b0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	SDL_SetRenderDrawColor(render, 255, 255, 255, 0);
+	for (double x = -screen_width / 2; x < screen_width / 2; x += step) {
+		double y = degreeFunction(x / density, a0, b0, c0) * density;
+		int screenX = x + screen_width / 2;
+		int screenY = screen_height / 2 - static_cast<int>(y);
+		SDL_RenderDrawPoint(render, screenX, screenY);
+	}
+	SDL_RenderPresent(render);
+}
+
+double exponentialFunction(double x, double a0, double b0, double c0, double d0)
+{
+	return a0 * pow(b0, c0 * x) + d0;
+}
+
+void exponential1()
+{
+	cout << "Вы выбрали функцию типа: показательная функция: a0*b0^(c0*x) + d0" << endl;
+	cout << "Необходимо заполнить маску показательной функции, введите ее свободный член, основание(a*b) и множитель показателя X" << endl;
+
+	double d0, a0 = 0, b0 = 0, c0;
+
+	cout << "d0 = ";
+
+	while (!(cin >> d0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	while (a0 * b0 <= 0 || a0 * b0 == 1)
+	{
+		cout << "a0 = ";
+
+		while (!(cin >> a0))
+		{
+			cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+
+		cout << "b0 = ";
+
+		while (!(cin >> b0))
+		{
+			cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
+
+	cout << "c0 = ";
+
+	while (!(cin >> c0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	SDL_SetRenderDrawColor(render, 255, 255, 255, 0);
+	const int density = 5; // плотность отрисовки
+	const int step = 1;
+	for (double x = -screen_width / 2; x < screen_width / 2; x += step) {
+		double y = exponentialFunction(x / density, a0, b0, c0, d0) * density;
+		int screenX = x + screen_width / 2;
+		int screenY = screen_height / 2 - static_cast<int>(y);
+		SDL_RenderDrawPoint(render, screenX, screenY);
+	}
+	SDL_RenderPresent(render);
+}
+
+double logarithmFunction(double x, double a0, double b0, double c0)
+{
+	return a0 * log(b0 * x) + c0;
+}
+
+void logarithm1()
+{
+	cout << "Вы выбрали функцию типа: логарифмическая функция: a0*ln(b0*x) + c0" << endl;
+	cout << "Необходимо заполнить маску логарифмической функции, введите ее свободный член, множитель логарифма и множитель X аргумента логарифма" << endl;
+
+	double c0, a0, b0;
+
+	cout << "c0 = ";
+
+	while (!(cin >> c0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "a0 = ";
+
+	while (!(cin >> a0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "b0 = ";
+
+	while (!(cin >> b0) || b0 <= 0)
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	SDL_SetRenderDrawColor(render, 255, 255, 255, 0);
+	const int density = 5; // плотность отрисовки
+	const int step = 1;
+	for (double x = -screen_width / 2; x < screen_width / 2; x += step) {
+		double y = logarithmFunction(x / density, a0, b0, c0) * density;
+		int screenX = x + screen_width / 2;
+		int screenY = screen_height / 2 - static_cast<int>(y);
+		SDL_RenderDrawPoint(render, screenX, screenY);
+	}
+	SDL_RenderPresent(render);
+}
+
+double sinusoidFunction(double x, double a0, double b0, double c0, double d0)
+{
+	return a0 * sin(b0 * x + c0) + d0;
+}
+
+void sinusoid1()
+{
+	cout << "Вы выбрали функцию типа: синусоида: a0*sin(b0*x + c0) + d0" << endl;
+	cout << "Необходимо заполнить маску синусоиды, введите ее свободный член, множитель sin - уса, множитель X аргумента sin - уса, слагаемое аргумента sin - уса" << endl;
+
+	double a0, b0, c0, d0;
+
+	cout << "d0 = ";
+
+	while (!(cin >> d0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "a0 = ";
+
+	while (!(cin >> a0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "b0 = ";
+
+	while (!(cin >> b0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "c0 = ";
+
+	while (!(cin >> c0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	SDL_SetRenderDrawColor(render, 255, 255, 255, 0);
+	const int density = 5; // плотность отрисовки
+	const int step = 1;
+	for (double x = -screen_width / 2; x < screen_width / 2; x += step) {
+		double y = sinusoidFunction(x / density, a0, b0, c0, d0) * density;
+		int screenX = x + screen_width / 2;
+		int screenY = screen_height / 2 - static_cast<int>(y);
+		SDL_RenderDrawPoint(render, screenX, screenY);
+	}
+	SDL_RenderPresent(render);
+}
+
+double cosinusFunction(double x, double a0, double b0, double c0, double d0)
+{
+	return a0 * cos(b0 * x + c0) + d0;
+}
+
+void cosinusoid1()
+{
+	cout << "Вы выбрали функцию типа: косинусоида: a0* cos(b0 * x + c0) + d0;" << endl;
+	cout << "Необходимо заполнить маску синусоиды, введите ее свободный член, множитель cos - уса, множитель X аргумента cos - инуса, слагаемое аргумента cos - инуса" << endl;
+
+	double a0, b0, c0, d0;
+
+	cout << "d0 = ";
+
+	while (!(cin >> d0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "a0 = ";
+
+	while (!(cin >> a0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "b0 = ";
+
+	while (!(cin >> b0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	cout << "c0 = ";
+
+	while (!(cin >> c0))
+	{
+		cout << "Некорректный ввод. Пожалуйста, введите корректные число: ";
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	}
+
+	SDL_SetRenderDrawColor(render, 255, 255, 255, 0);
+	const int density = 5; // плотность отрисовки
+	const int step = 1;
+	for (double x = -screen_width / 2; x < screen_width / 2; x += step) {
+		double y = cosinusFunction(x / density, a0, b0, c0, d0) * density;
+		int screenX = x + screen_width / 2;
+		int screenY = screen_height / 2 - static_cast<int>(y);
+		SDL_RenderDrawPoint(render, screenX, screenY);
+	}
+	SDL_RenderPresent(render);
+}
+
+void function_choice()
+{
+	int o1 = -1;
+	do
+	{
+		cout << "Выберите функцию, с которой хотите работать, где:\n1 - полином n - ой степени: a0 + a1*x + a2*x^2 + ... + aN*x^N\n2 - степенная функция: a0*x^b0 + c0\n3 - показательная функция: a0*b0^(c0*x) + d0\n4 - логарифмическая функция: a0*ln(b0*x) + c0\n5 - синусоида: a0*sin(b0*x + c0) + d0\n6 - косинусоида: a0*cos(b0*x + c0) + d0\n0 - закрыть меню выбора функции" << endl;
+		while (!(cin >> o1))
+		{
+			cout << "Некорректный ввод. Пожалуйста, введите целое число: ";
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+
+		switch (o1)
+		{
+		case 0:
+		{
+			cout << "Меню выбора функции закрыто\n";
+			SDL_DestroyRenderer(render);
+			SDL_DestroyWindow(window);
+			window = NULL;
+			render = NULL;
+			SDL_Quit();
+			break;
+		}
+		case 1:
+		{
+			polinomial1();
+			break;
+		}
+		case 2:
+		{
+			degree1();
+			break;
+		}
+		case 3:
+		{
+			exponential1();
+			break;
+		}
+		case 4:
+		{
+			logarithm1();
+			break;
+		}
+		case 5:
+		{
+			sinusoid1();
+			break;
+		}
+		case 6:
+		{
+			cosinusoid1();
+			break;
+		}
+		default: 
+		{
+			cout << "ошибка" << endl; break; 
+		}
+		}
+	} while (o1 != 0);
+}
+
+/// Вычисление интеграла \\\
 
 void integral()
 {
@@ -496,6 +948,8 @@ void function(double x, double integration_range1, double integration_range2)
 	} while (o1 != 0);
 }
 
+
+/// Поиск корня на отрезке \\\
 
 double func11(double x, double* coefficient, int n, double a0)
 {
@@ -1226,6 +1680,9 @@ void searchRoot()
 		}
 	} while (o1 != 0);
 }
+
+
+/// Поиск экстремума на отрезке \\\
 
 double func21(double x, double* coefficient, int n, double a0)
 {
