@@ -1,4 +1,4 @@
-﻿#include "matrix.h"
+#include "matrix.h"
 using namespace std;
 
 double Determinant(double** matrix, int n) {
@@ -65,630 +65,756 @@ double DetOfMinor(double** matrix, int row, int column, int n) {
 
 void matrix_func1()
 {
-    int n, m;
-    int limit = 8;
+	int n, m;
+	int limit = 8;
 
-    cout << "Введите количество строк и столбцов матриц: ";
-    do
-    {
-        cin >> n >> m;
-        if (!((n > 0) && (m > 0)))
-            cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
-    } while (!((n > 0) && (m > 0)));
+	cout << "Введите количество строк и столбцов матриц: ";
+	do
+	{
+		cin >> n >> m;
+		if (!((n > 0) && (m > 0)))
+			cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
+	} while (!((n > 0) && (m > 0)));
 
-    double** a = new double* [n];
-    double** b = new double* [n];
+	double** a = new double* [n];
+	double** b = new double* [n];
 
-    for (int i = 0; i < n; i++)
-    {
-        a[i] = new double[m];
-        b[i] = new double[n];
-    }
+	for (int i = 0; i < n; i++)
+	{
+		a[i] = new double[m];
+		b[i] = new double[m];
+	}
 
-    cout << "Органичение длины числа - 8\n";
+	cout << "Органичение длины числа - 8\n";
 
-    cout << "Заполните матрицу А: " << endl;
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-        {
-            cout << "Введите элемент a[" << i << "][" << j << "]: ";
-            cin >> a[i][j];
-        }
+	cout << "Заполните матрицу А: " << endl;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++)
+		{
+			cout << "Введите элемент a[" << i << "][" << j << "]: ";
+			cin >> a[i][j];
+		}
 
-    cout << "Заполните матрицу B: " << endl;
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-        {
-            cout << "Введите элемент b[" << i << "][" << j << "]: ";
-            cin >> b[i][j];
-        }
+	cout << "Заполните матрицу B: " << endl;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++)
+		{
+			cout << "Введите элемент b[" << i << "][" << j << "]: ";
+			cin >> b[i][j];
+		}
 
-    cout << "\nМатрица A:\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            x = regex_replace(x, regex("\\,?$"), "");
-            cout << left << setw(limit) << x << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица A:\n";
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m; j++)
+		{
+			string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			x = regex_replace(x, regex("\\,?$"), "");
+			cout << left << setw(limit) << x << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--";
 
-    cout << "\nМатрица B:\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            string x = regex_replace(to_string(b[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            x = regex_replace(x, regex("\\,?$"), "");
-            cout << left << setw(limit) << x << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица B:\n";
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m; j++)
+		{
+			string x = regex_replace(to_string(b[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			x = regex_replace(x, regex("\\,?$"), "");
+			cout << left << setw(limit) << x << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--";
 
-    cout << "\nМатрица C = A + B:\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            string a_str = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            string b_str = regex_replace(to_string(b[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            string c = regex_replace(to_string(stod(a_str) + stod(b_str)).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            c = regex_replace(c, regex("\\,?$"), "");
-            cout << left << setw(limit) << c << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица C = A + B:\n";
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m; j++)
+		{
+			string a_str = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			string b_str = regex_replace(to_string(b[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			string c = regex_replace(to_string(stod(a_str) + stod(b_str)).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			c = regex_replace(c, regex("\\,?$"), "");
+			cout << left << setw(limit) << c << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--";
 
-    for (int i = 0; i < n; i++)
-    {
-        delete[]a[i];
-        delete[]b[i];
-    }
+	for (int i = 0; i < n; i++)
+	{
+		delete[]a[i];
+		delete[]b[i];
+	}
 
-    delete[]a;
-    delete[]b;
+	delete[]a;
+	delete[]b;
 
-    cout << "\n-----------------------------------------------------------\n\n";
+	cout << "\n-----------------------------------------------------------\n\n";
 }
 
 
 void matrix_func2()
 {
-    int n, m;
-    int limit = 8;
+	int n, m;
+	int limit = 8;
 
-    cout << "Введите количество строк и столбцов матриц: ";
-    do
-    {
-        cin >> n >> m;
-        if (!((n > 0) && (m > 0)))
-            cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
-    } while (!((n > 0) && (m > 0)));
+	cout << "Введите количество строк и столбцов матриц: ";
+	do
+	{
+		cin >> n >> m;
+		if (!((n > 0) && (m > 0)))
+			cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
+	} while (!((n > 0) && (m > 0)));
 
-    double** a = new double* [n];
-    double** b = new double* [n];
+	double** a = new double* [n];
+	double** b = new double* [n];
 
-    for (int i = 0; i < n; i++)
-    {
-        a[i] = new double[m];
-        b[i] = new double[n];
-    }
+	for (int i = 0; i < n; i++)
+	{
+		a[i] = new double[m];
+		b[i] = new double[m];
+	}
 
-    cout << "Органичение длины числа - 8\n";
+	cout << "Органичение длины числа - 8\n";
 
-    cout << "Заполните матрицу А: " << endl;
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-        {
-            cout << "Введите элемент a[" << i << "][" << j << "]: ";
-            cin >> a[i][j];
-        }
+	cout << "Заполните матрицу А: " << endl;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++)
+		{
+			cout << "Введите элемент a[" << i << "][" << j << "]: ";
+			cin >> a[i][j];
+		}
 
-    cout << "Заполните матрицу B: " << endl;
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-        {
-            cout << "Введите элемент b[" << i << "][" << j << "]: ";
-            cin >> b[i][j];
-        }
+	cout << "Заполните матрицу B: " << endl;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++)
+		{
+			cout << "Введите элемент b[" << i << "][" << j << "]: ";
+			cin >> b[i][j];
+		}
 
-    cout << "\nМатрица A:\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            x = regex_replace(x, regex("\\,?$"), "");
-            cout << left << setw(limit) << x << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица A:\n";
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m; j++)
+		{
+			string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			x = regex_replace(x, regex("\\,?$"), "");
+			cout << left << setw(limit) << x << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--";
 
-    cout << "\nМатрица B:\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            string x = regex_replace(to_string(b[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            x = regex_replace(x, regex("\\,?$"), "");
-            cout << left << setw(limit) << x << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица B:\n";
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m; j++)
+		{
+			string x = regex_replace(to_string(b[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			x = regex_replace(x, regex("\\,?$"), "");
+			cout << left << setw(limit) << x << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--";
 
-    cout << "\nМатрица C = A - B:\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            string a_str = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            string b_str = regex_replace(to_string(b[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            string c = regex_replace(to_string(stod(a_str) - stod(b_str)).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            c = regex_replace(c, regex("\\,?$"), "");
-            cout << left << setw(limit) << c << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица C = A - B:\n";
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m; j++)
+		{
+			string a_str = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			string b_str = regex_replace(to_string(b[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			string c = regex_replace(to_string(stod(a_str) - stod(b_str)).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			c = regex_replace(c, regex("\\,?$"), "");
+			cout << left << setw(limit) << c << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--";
 
-    for (int i = 0; i < n; i++)
-    {
-        delete[]a[i];
-        delete[]b[i];
-    }
+	for (int i = 0; i < n; i++)
+	{
+		delete[]a[i];
+		delete[]b[i];
+	}
 
-    delete[]a;
-    delete[]b;
+	delete[]a;
+	delete[]b;
 
-    cout << "\n-----------------------------------------------------------\n\n";
+	cout << "\n-----------------------------------------------------------\n\n";
 }
 
 
 void matrix_func3()
 {
-    int n1, m1, n2, m2;
-    int limit = 8;
+	int n1, m1, n2, m2;
+	int limit = 8;
 
-    cout << "Введите количество строк и стобцов матрицы А: ";
-    do
-    {
-        cin >> n1 >> m1;
-        if (!((n1 > 0) && (m1 > 0)))
-            cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
-    } while (!((n1 > 0) && (m1 > 0)));
+	cout << "Введите количество строк и стобцов матрицы А: ";
+	do
+	{
+		cin >> n1 >> m1;
+		if (!((n1 > 0) && (m1 > 0)))
+			cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
+	} while (!((n1 > 0) && (m1 > 0)));
 
-    n2 = m1;
+	n2 = m1;
 
-    cout << "Введите количество столбцов матрицы B: ";
-    do
-    {
-        cin >> m2;
-        if (m2 <= 0)
-            cout << "Количество столбцов должно быть больше нуля, попробуйте ещё раз: ";
-    } while (m2 <= 0);
+	cout << "Введите количество столбцов матрицы B: ";
+	do
+	{
+		cin >> m2;
+		if (m2 <= 0)
+			cout << "Количество столбцов должно быть больше нуля, попробуйте ещё раз: ";
+	} while (m2 <= 0);
 
-    double** a = new double* [n1];
-    double** b = new double* [n2];
+	double** a = new double* [n1];
+	double** b = new double* [n2];
 
-    for (int i = 0; i < n1; i++)
-        a[i] = new double[m1];
+	for (int i = 0; i < n1; i++)
+		a[i] = new double[m1];
 
-    for (int i = 0; i < n2; i++)
-        b[i] = new double[m2];
+	for (int i = 0; i < n2; i++)
+		b[i] = new double[m2];
 
-    cout << "Органичение длины числа - 8\n";
+	cout << "Органичение длины числа - 8\n";
 
-    cout << "Заполните матрицу А: " << endl;
-    for (int i = 0; i < n1; i++)
-        for (int j = 0; j < m1; j++)
-        {
-            cout << "Введите элемент a[" << i << "][" << j << "]: ";
-            cin >> a[i][j];
-        }
+	cout << "Заполните матрицу А: " << endl;
+	for (int i = 0; i < n1; i++)
+		for (int j = 0; j < m1; j++)
+		{
+			cout << "Введите элемент a[" << i << "][" << j << "]: ";
+			cin >> a[i][j];
+		}
 
-    cout << "Заполните матрицу B: " << endl;
-    for (int i = 0; i < n2; i++)
-        for (int j = 0; j < m2; j++)
-        {
-            cout << "Введите элемент b[" << i << "][" << j << "]: ";
-            cin >> b[i][j];
-        }
+	cout << "Заполните матрицу B: " << endl;
+	for (int i = 0; i < n2; i++)
+		for (int j = 0; j < m2; j++)
+		{
+			cout << "Введите элемент b[" << i << "][" << j << "]: ";
+			cin >> b[i][j];
+		}
 
-    cout << "\nМатрица A:\n";
-    for (int i = 0; i < n1; i++)
-    {
-        for (int j = 0; j < m1; j++)
-        {
-            string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            x = regex_replace(x, regex("\\,?$"), "");
-            cout << left << setw(limit) << x << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица A:\n";
+	for (int i = 0; i < m1; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n1; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m1; j++)
+		{
+			string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			x = regex_replace(x, regex("\\,?$"), "");
+			cout << left << setw(limit) << x << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m1; i++)
+		cout << "---------";
+	cout << "--";
 
-    cout << "\nМатрица B:\n";
-    for (int i = 0; i < n2; i++)
-    {
-        for (int j = 0; j < m2; j++)
-        {
-            string x = regex_replace(to_string(b[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            x = regex_replace(x, regex("\\,?$"), "");
-            cout << left << setw(limit) << x << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица B:\n";
+	for (int i = 0; i < m2; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n2; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m2; j++)
+		{
+			string x = regex_replace(to_string(b[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			x = regex_replace(x, regex("\\,?$"), "");
+			cout << left << setw(limit) << x << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m2; i++)
+		cout << "---------";
+	cout << "--";
 
-    cout << "\nМатрица C = A * B:\n";
-    for (int i = 0; i < n1; i++)
-    {
-        for (int j = 0; j < m2; j++)
-        {
-            double s = 0;
-            for (int t = 0; t < m1; t++)
-                s += stod(regex_replace(to_string(a[i][t]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2")) *
-                stod(regex_replace(to_string(b[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2"));
-            string x = regex_replace(to_string(s).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            x = regex_replace(x, regex("\\,?$"), "");
-            cout << left << setw(limit) << x << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица C = A * B:\n";
+	for (int i = 0; i < m2; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n1; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m2; j++)
+		{
+			double s = 0;
+			for (int t = 0; t < m1; t++)
+				s += stod(regex_replace(to_string(a[i][t]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2")) *
+				stod(regex_replace(to_string(b[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2"));
+			string x = regex_replace(to_string(s).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			x = regex_replace(x, regex("\\,?$"), "");
+			cout << left << setw(limit) << x << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m2; i++)
+		cout << "---------";
+	cout << "--";
 
-    for (int i = 0; i < n1; i++)
-        delete[]a[i];
+	for (int i = 0; i < n1; i++)
+		delete[]a[i];
 
-    for (int i = 0; i < n2; i++)
-        delete[]b[i];
+	for (int i = 0; i < n2; i++)
+		delete[]b[i];
 
-    delete[]a;
-    delete[]b;
+	delete[]a;
+	delete[]b;
 
-    cout << "\n-----------------------------------------------------------\n\n";
+	cout << "\n-----------------------------------------------------------\n\n";
 }
 
 
 void matrix_func4()
 {
-    int n, m;
-    int limit = 8;
-    double k;
+	int n, m;
+	int limit = 8;
+	double k;
 
-    cout << "Введите количество строк и столбцов матрицы: ";
-    do
-    {
-        cin >> n >> m;
-        if (!((n > 0) && (m > 0)))
-            cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
-    } while (!((n > 0) && (m > 0)));
+	cout << "Введите количество строк и столбцов матрицы: ";
+	do
+	{
+		cin >> n >> m;
+		if (!((n > 0) && (m > 0)))
+			cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
+	} while (!((n > 0) && (m > 0)));
 
-    double** a = new double* [n];
+	double** a = new double* [n];
 
-    for (int i = 0; i < n; i++)
-        a[i] = new double[m];
+	for (int i = 0; i < n; i++)
+		a[i] = new double[m];
 
-    cout << "Органичение длины числа - 8\n";
+	cout << "Органичение длины числа - 8\n";
 
-    cout << "Заполните матрицу А: " << endl;
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-        {
-            cout << "Введите элемент a[" << i << "][" << j << "]: ";
-            cin >> a[i][j];
-        }
+	cout << "Заполните матрицу А: " << endl;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++)
+		{
+			cout << "Введите элемент a[" << i << "][" << j << "]: ";
+			cin >> a[i][j];
+		}
 
-    cout << "Ведите число k: ";
-    cin >> k;
-    string k_str = regex_replace(to_string(k).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+	cout << "Ведите число k: ";
+	cin >> k;
+	string k_str = regex_replace(to_string(k).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
 
-    cout << "\nМатрица A:\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            x = regex_replace(x, regex("\\,?$"), "");
-            cout << left << setw(limit) << x << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица A:\n";
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m; j++)
+		{
+			string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			x = regex_replace(x, regex("\\,?$"), "");
+			cout << left << setw(limit) << x << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--";
 
-    cout << "\nМатрица C = k * A:\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            string a_str = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            string c = regex_replace(to_string(stod(k_str) * stod(a_str)).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            c = regex_replace(c, regex("\\,?$"), "");
-            cout << left << setw(limit) << c << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица C = k * A:\n";
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m; j++)
+		{
+			string a_str = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			string c = regex_replace(to_string(stod(k_str) * stod(a_str)).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			c = regex_replace(c, regex("\\,?$"), "");
+			cout << left << setw(limit) << c << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--";
 
-    for (int i = 0; i < n; i++)
-        delete[]a[i];
+	for (int i = 0; i < n; i++)
+		delete[]a[i];
 
-    delete[]a;
+	delete[]a;
 
-    cout << "\n-----------------------------------------------------------\n\n";
+	cout << "\n-----------------------------------------------------------\n\n";
 }
 
 
 void matrix_func5()
 {
-    int n, m;
-    int limit = 8;
-    double k;
+	int n, m;
+	int limit = 8;
+	double k;
 
-    cout << "Введите количество строк и столбцов матрицы: ";
-    do
-    {
-        cin >> n >> m;
-        if (!((n > 0) && (m > 0)))
-            cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
-    } while (!((n > 0) && (m > 0)));
+	cout << "Введите количество строк и столбцов матрицы: ";
+	do
+	{
+		cin >> n >> m;
+		if (!((n > 0) && (m > 0)))
+			cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
+	} while (!((n > 0) && (m > 0)));
 
-    double** a = new double* [n];
+	double** a = new double* [n];
 
-    for (int i = 0; i < n; i++)
-        a[i] = new double[m];
+	for (int i = 0; i < n; i++)
+		a[i] = new double[m];
 
-    cout << "Органичение длины числа - 8\n";
+	cout << "Органичение длины числа - 8\n";
 
-    cout << "Заполните матрицу А: " << endl;
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-        {
-            cout << "Введите элемент a[" << i << "][" << j << "]: ";
-            cin >> a[i][j];
-        }
+	cout << "Заполните матрицу А: " << endl;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++)
+		{
+			cout << "Введите элемент a[" << i << "][" << j << "]: ";
+			cin >> a[i][j];
+		}
 
-    cout << "Ведите число k: ";
-    cin >> k;
-    string k_str = regex_replace(to_string(k).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+	cout << "Ведите число k: ";
+	cin >> k;
+	string k_str = regex_replace(to_string(k).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
 
-    cout << "\nМатрица A:\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            x = regex_replace(x, regex("\\,?$"), "");
-            cout << left << setw(limit) << x << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица A:\n";
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m; j++)
+		{
+			string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			x = regex_replace(x, regex("\\,?$"), "");
+			cout << left << setw(limit) << x << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--";
 
-    cout << "\nМатрица C = A + k:\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            string a_str = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            string c = regex_replace(to_string(stod(a_str) + stod(k_str)).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            c = regex_replace(c, regex("\\,?$"), "");
-            cout << left << setw(limit) << c << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица C = A + k:\n";
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m; j++)
+		{
+			string a_str = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			string c = regex_replace(to_string(stod(a_str) + stod(k_str)).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			c = regex_replace(c, regex("\\,?$"), "");
+			cout << left << setw(limit) << c << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--";
 
-    for (int i = 0; i < n; i++)
-        delete[]a[i];
+	for (int i = 0; i < n; i++)
+		delete[]a[i];
 
-    delete[]a;
+	delete[]a;
 
-    cout << "\n-----------------------------------------------------------\n\n";
+	cout << "\n-----------------------------------------------------------\n\n";
 }
 
 
 void matrix_func6()
 {
-    int n, m;
-    int limit = 8;
+	int n, m;
+	int limit = 8;
 
-    cout << "Введите количество строк и столбцов матрицы: ";
-    do
-    {
-        cin >> n >> m;
-        if (!((n > 0) && (m > 0)))
-            cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
-    } while (!((n > 0) && (m > 0)));
+	cout << "Введите количество строк и столбцов матрицы: ";
+	do
+	{
+		cin >> n >> m;
+		if (!((n > 0) && (m > 0)))
+			cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
+	} while (!((n > 0) && (m > 0)));
 
-    double** a = new double* [n];
-    double** a1 = new double* [m];
+	double** a = new double* [n];
+	double** a1 = new double* [m];
 
-    for (int i = 0; i < n; i++)
-        a[i] = new double[m];
+	for (int i = 0; i < n; i++)
+		a[i] = new double[m];
 
-    for (int i = 0; i < m; i++)
-        a1[i] = new double[n];
+	for (int i = 0; i < m; i++)
+		a1[i] = new double[n];
 
-    cout << "Органичение длины числа - 8\n";
+	cout << "Органичение длины числа - 8\n";
 
-    cout << "Заполните матрицу А: " << endl;
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-        {
-            cout << "Введите элемент a[" << i << "][" << j << "]: ";
-            cin >> a[i][j];
-            a1[j][i] = a[i][j];
-        }
+	cout << "Заполните матрицу А: " << endl;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++)
+		{
+			cout << "Введите элемент a[" << i << "][" << j << "]: ";
+			cin >> a[i][j];
+			a1[j][i] = a[i][j];
+		}
 
-    cout << "\nМатрица А:\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            x = regex_replace(x, regex("\\,?$"), "");
-            cout << left << setw(limit) << x << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица A:\n";
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < m; j++)
+		{
+			string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			x = regex_replace(x, regex("\\,?$"), "");
+			cout << left << setw(limit) << x << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < m; i++)
+		cout << "---------";
+	cout << "--";
 
-    cout << "\nМатрица А^T:\n";
-    for (int i = 0; i < m; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            string x = regex_replace(to_string(a1[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            x = regex_replace(x, regex("\\,?$"), "");
-            cout << left << setw(limit) << x << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица A^t:\n";
+	for (int i = 0; i < n; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < m; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < n; j++)
+		{
+			string x = regex_replace(to_string(a1[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			x = regex_replace(x, regex("\\,?$"), "");
+			cout << left << setw(limit) << x << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < n; i++)
+		cout << "---------";
+	cout << "--";
 
-    for (int i = 0; i < n; i++)
-        delete[]a[i];
+	for (int i = 0; i < n; i++)
+		delete[]a[i];
 
-    for (int i = 0; i < m; i++)
-        delete[]a1[i];
+	for (int i = 0; i < m; i++)
+		delete[]a1[i];
 
-    delete[]a;
-    delete[]a1;
+	delete[]a;
+	delete[]a1;
 
-    cout << "\n-----------------------------------------------------------\n\n";
+	cout << "\n-----------------------------------------------------------\n\n";
 }
 
 
 void matrix_func7()
 {
-    int n;
-    int limit = 8;
-    double det;
+	int n;
+	int limit = 8;
+	double det;
 
-    cout << "Введите порядок квадратной матрицы: ";
-    do
-    {
-        cin >> n;
-        if (n <= 0)
-            cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
-    } while (n <= 0);
+	cout << "Введите порядок квадратной матрицы: ";
+	do
+	{
+		cin >> n;
+		if (n <= 0)
+			cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
+	} while (n <= 0);
 
-    double** a = new double* [n];
+	double** a = new double* [n];
 
-    for (int i = 0; i < n; i++)
-        a[i] = new double[n];
+	for (int i = 0; i < n; i++)
+		a[i] = new double[n];
 
-    cout << "Органичение длины числа - 8\n";
+	cout << "Органичение длины числа - 8\n";
 
-    cout << "Заполните матрицу А: " << endl;
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-        {
-            cout << "Введите элемент a[" << i << "][" << j << "]: ";
-            cin >> a[i][j];
-        }
+	cout << "Заполните матрицу А: " << endl;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+		{
+			cout << "Введите элемент a[" << i << "][" << j << "]: ";
+			cin >> a[i][j];
+		}
 
-    cout << "\nМатрица A:\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            x = regex_replace(x, regex("\\,?$"), "");
-            cout << left << setw(limit) << x << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица A:\n";
+	for (int i = 0; i < n; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < n; j++)
+		{
+			string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			x = regex_replace(x, regex("\\,?$"), "");
+			cout << left << setw(limit) << x << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < n; i++)
+		cout << "---------";
+	cout << "--";
 
-    det = Determinant(a, n);
-    if (det == 0)
-        cout << "Определитель равен 0, обратной матрицы не существует";
-    else
-    {
-        double** inverse = new double* [n];
-        for (int i = 0; i < n; i++)
-            inverse[i] = new double[n];
+	det = Determinant(a, n);
+	if (det == 0)
+		cout << "\nОпределитель равен 0, обратной матрицы не существует";
+	else
+	{
+		double** inverse = new double* [n];
+		for (int i = 0; i < n; i++)
+			inverse[i] = new double[n];
 
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < n; ++j) {
-                int minorDet = DetOfMinor(a, i, j, n);
-                int k = -1;
-                if ((i + j) % 2 == 0) k = 1;
-                inverse[j][i] = k * minorDet / det;
-            }
-        }
+		for (int i = 0; i < n; ++i) {
+			for (int j = 0; j < n; ++j) {
+				int minorDet = DetOfMinor(a, i, j, n);
+				int k = -1;
+				if ((i + j) % 2 == 0) k = 1;
+				inverse[j][i] = k * minorDet / det;
+			}
+		}
 
-        string x = regex_replace(to_string(det).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-        x = regex_replace(x, regex("\\,?$"), "");
-        cout << "\nМатрциа A^-1: " << endl;
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                string x = regex_replace(to_string(inverse[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-                x = regex_replace(x, regex("\\,?$"), "");
-                cout << left << setw(limit) << x << " ";
-            }
-            cout << endl;
-        }
+		string x = regex_replace(to_string(det).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+		x = regex_replace(x, regex("\\,?$"), "");
+		cout << "\nМатрциа A^-1: " << endl;
+		for (int i = 0; i < n; i++)
+			cout << "---------";
+		cout << "--\n";
+		for (int i = 0; i < n; i++)
+		{
+			cout << "|";
+			for (int j = 0; j < n; j++)
+			{
+				string x = regex_replace(to_string(inverse[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+				x = regex_replace(x, regex("\\,?$"), "");
+				cout << left << setw(limit) << x << " ";
+			}
+			cout << "|" << endl;
+		}
+		for (int i = 0; i < n; i++)
+			cout << "---------";
+		cout << "--";
+	}
 
-    }
+	for (int i = 0; i < n; i++)
+		delete[]a[i];
 
-    for (int i = 0; i < n; i++)
-        delete[]a[i];
+	delete[]a;
 
-    delete[]a;
-
-    cout << "\n-----------------------------------------------------------\n\n";
+	cout << "\n-----------------------------------------------------------\n\n";
 }
 
 
 void matrix_func8()
 {
-    int n;
-    int limit = 8;
-    double det;
+	int n;
+	int limit = 8;
+	double det;
 
-    cout << "Введите порядок квадратной матрицы: ";
-    do
-    {
-        cin >> n;
-        if (n <= 0)
-            cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
-    } while (n <= 0);
+	cout << "Введите порядок квадратной матрицы: ";
+	do
+	{
+		cin >> n;
+		if (n <= 0)
+			cout << "Количество строк и столбцов должно быть больше нуля, попробуйте ещё раз: ";
+	} while (n <= 0);
 
-    double** a = new double* [n];
+	double** a = new double* [n];
 
-    for (int i = 0; i < n; i++)
-        a[i] = new double[n];
+	for (int i = 0; i < n; i++)
+		a[i] = new double[n];
 
-    cout << "Органичение длины числа - 8\n";
+	cout << "Органичение длины числа - 8\n";
 
-    cout << "Заполните матрицу А: " << endl;
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-        {
-            cout << "Введите элемент a[" << i << "][" << j << "]: ";
-            cin >> a[i][j];
-        }
+	cout << "Заполните матрицу А: " << endl;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+		{
+			cout << "Введите элемент a[" << i << "][" << j << "]: ";
+			cin >> a[i][j];
+		}
 
-    cout << "\nМатрица A:\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-            x = regex_replace(x, regex("\\,?$"), "");
-            cout << left << setw(limit) << x << " ";
-        }
-        cout << endl;
-    }
+	cout << "\nМатрица A:\n";
+	for (int i = 0; i < n; i++)
+		cout << "---------";
+	cout << "--\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < n; j++)
+		{
+			string x = regex_replace(to_string(a[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+			x = regex_replace(x, regex("\\,?$"), "");
+			cout << left << setw(limit) << x << " ";
+		}
+		cout << "|" << endl;
+	}
+	for (int i = 0; i < n; i++)
+		cout << "---------";
+	cout << "--";
 
-    det = Determinant(a, n);
-    string x = regex_replace(to_string(det).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
-    x = regex_replace(x, regex("\\,?$"), "");
-    cout << "\n|A| = " << x;
+	det = Determinant(a, n);
+	string x = regex_replace(to_string(det).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
+	x = regex_replace(x, regex("\\,?$"), "");
+	cout << "\n|A| = " << x;
 
-    for (int i = 0; i < n; i++)
-        delete[]a[i];
+	for (int i = 0; i < n; i++)
+		delete[]a[i];
 
-    delete[]a;
+	delete[]a;
 
-    cout << "\n-----------------------------------------------------------\n\n";
+	cout << "\n-----------------------------------------------------------\n\n";
 }
+
 
 void work_matrix()
 {
