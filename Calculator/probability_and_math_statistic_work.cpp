@@ -1,8 +1,8 @@
-﻿#include "probability_and_math_statistic.h"
+#include "probability_and_math_statistic.h"
 using namespace std;
 
 void Probability() {
-	int m, n;
+	double m, n;
 	do {
 		cout << "Введите число благоприятных исходов M: ";
 		cin >> m;
@@ -15,8 +15,8 @@ void Probability() {
 		cin >> n;
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		if (n <= 0) cout << "<!> N > 0!\n";
-	} while (n <= 0);
+		if (n <= 0 || n < m) cout << "<!> N > 0 и N >= M!\n";
+	} while (n <= 0 || n < m);
 
 	cout << "M/N = " << m / n << "\n\n";
 }
