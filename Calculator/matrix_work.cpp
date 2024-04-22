@@ -1,4 +1,4 @@
-﻿#include "matrix.h"
+#include "matrix.h"
 using namespace std;
 
 double Determinant(double** matrix, int n) {
@@ -327,7 +327,7 @@ void matrix_func3()
             double s = 0;
             for (int t = 0; t < m1; t++)
                 s += stod(regex_replace(to_string(a[i][t]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2")) *
-                stod(regex_replace(to_string(b[i][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2"));
+                stod(regex_replace(to_string(b[t][j]).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2"));
             string x = regex_replace(to_string(s).substr(0, 8), regex("(\\,\\d*?)0+$|^([1-9]+)0+$"), "\$1\$2");
             x = regex_replace(x, regex("\\,?$"), "");
             cout << left << setw(limit) << x << " ";
